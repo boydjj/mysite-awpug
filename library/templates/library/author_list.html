@@ -1,0 +1,13 @@
+<html>
+<head>
+    <title>List of all authors</title>
+</head>
+<body>
+    <h1>All the authors we know about:</h1>
+    <ul>
+        {% for author in object_list %}
+            <li>{{ author.name }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
