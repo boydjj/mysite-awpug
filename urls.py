@@ -17,4 +17,5 @@ urlpatterns = patterns('',
 
     url(r'^hello_world/$', 'library.views.hello_world'),
     url(r'^books/$', 'library.views.book_index'),
+    url(r'^books/(\d)+/$', 'library.views.book_detail'),
 )
