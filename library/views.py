@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from library.models import Book
+from django.views.decorators.csrf import csrf_exempt
+from library.models import Book, Author
 
 def hello_world(request):
     return HttpResponse('Hi, AWPUG!')
@@ -48,3 +49,33 @@ def request_details(request):
             output += '<p>' + key + ': ' + request.GET[key]
 
     return HttpResponse(output)
+
+FORM_HTML = """
+<html>
+<head>
+    <title>Add an author</title>
+</head>
+<body>
+    <form action="%s" method="post">
+
+        <input type="text" name="author_name">
+        <input type="submit" value="Add author">
+    </form>
+</body>
+</html>
+"""
+@csrf_exempt # ignore this until we talk about forms
+def add_author(request):
+    if request.method == 'GET':
+        output = FORM_HTML % request.path
+    else:
+        a = Author(name=request.POST['author_name'])
+        try:
+            a.save()
+        except Exception as e:
+            output = "Whoops! There was an error: " + str(e)
+        else:
+            output = 'Success! We added an author named: ' + a.name
+
+    return HttpResponse(output)
+
