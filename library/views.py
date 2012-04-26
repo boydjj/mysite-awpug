@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.base import View
 from library.models import Book, Author
 
 def hello_world(request):
@@ -79,3 +80,15 @@ def add_author(request):
 
     return HttpResponse(output)
 
+class AddAuthorView(View):
+    def get(self, request):
+        return HttpResponse(FORM_HTML % request.path)
+    def post(self, request):
+        a = Author(name=request.POST['author_name'])
+        try:
+            a.save()
+        except Exception as e:
+            output = "Whoops! There was an error: " + str(e)
+        else:
+            output = 'Success! We added an author named: ' + a.name
+        return HttpResponse(output)
