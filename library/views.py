@@ -29,3 +29,22 @@ def book_detail(request, book_id):
         output += '</ul>'
 
     return HttpResponse(output)
+
+def request_details(request):
+    user_agent = request.META['HTTP_USER_AGENT']
+
+    output = '<p>Hi, user.</p>'
+    output += '<p>The path you accessed is: ' + request.path + '</p>'
+    output += '<p>The HTTP method you used is: ' + request.method + '</p>'
+    user_agent = request.META['HTTP_USER_AGENT']
+    output += 'Your user agent is: ' + user_agent + '</p>'
+
+
+    output += '<p>Your POST data is:</p>'
+    for key in request.POST:
+        output += '<p>' + key + ': ' + request.POST[key]
+    output += '<p>Your GET data is:</p>'
+    for key in request.GET:
+            output += '<p>' + key + ': ' + request.GET[key]
+
+    return HttpResponse(output)
