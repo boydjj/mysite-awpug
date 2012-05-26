@@ -2,27 +2,23 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
+from django.views.generic.list import ListView
 from library.models import Book, Author
 
-def hello_world(request):
-    return HttpResponse('Hi, AWPUG!')
 
-def book_index(request):
-    books = Book.objects.all()
+class AWPUGListView(ListView):
 
-    output = '<h1>Every book we know about:</h1>'
-    output += '<ul>'
-    for book in books:
-        output += '<li>' + book.title + '</li>'
-    output += '</ul>'
-
-    return HttpResponse(output)
+    def get_context_data(*args, **kwargs):
+        object_list = kwargs.get('object_list', [])
+        return {'page_title': 'AWPUG Library', 
+                'object_list':object_list}
 
 def book_detail(request, book_id):
     book = get_object_or_404(Book, id=book_id)
 
     output = '<h1>' + book.title + '</h1>'
-    output += 'Page length: ' + str(book.page_length) + '</br>' # remember page_length is an int
+    output += 'Page length: ' + str(book.page_length) + '</br>' 
+                                    # remember page_length is an int
     if book.authors:
         output += 'Authors:'
         output += '<ul>'

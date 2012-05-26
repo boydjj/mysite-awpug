@@ -4,9 +4,10 @@ from django.conf.urls.defaults import patterns, include, url
 # from django.contrib import admin
 # admin.autodiscover()
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic.list import ListView
-from library.models import Author
-from library.views import AddAuthorView
+from library.models import Author, Book
+from library.views import AddAuthorView, AWPUGListView
+
+from django.views.generic import TemplateView
 
 urlpatterns = patterns('',
     # Examples:
@@ -17,13 +18,15 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
-
-    url(r'^hello_world/$', 'library.views.hello_world'),
-    url(r'^books/$', 'library.views.book_index'),
+    url(r'^$', TemplateView.as_view(
+                template_name="library/index.html", 
+                get_context_data=lambda:{'page_title':"AWPUG Library"})),
     url(r'^books/(\d+)/$', 'library.views.book_detail'),
     url(r'^request_details/$', 'library.views.request_details'),
     url(r'^add_author/$', 'library.views.add_author'),
-    url(r'^authors/$', ListView.as_view(model=Author)),
+    url(r'^books/$', AWPUGListView.as_view(model=Book), 
+                             name='library.views.book_index'),
+    url(r'^authors/$', AWPUGListView.as_view(model=Author), 
+                             name='library.views.authors'),
     url(r'^add_author_class/$', csrf_exempt(AddAuthorView.as_view())),
 )
