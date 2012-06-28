@@ -19,7 +19,8 @@ def book_detail(request, book_id):
     output = '<h1>' + book.title + '</h1>'
     output += 'Page length: ' + str(book.page_length) + '</br>'
                                     # remember page_length is an int
-    if book.authors:
+
+    if book.authors.all():
         output += 'Authors:'
         output += '<ul>'
         for author in book.authors.all():
