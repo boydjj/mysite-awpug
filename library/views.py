@@ -10,14 +10,14 @@ class AWPUGListView(ListView):
 
     def get_context_data(*args, **kwargs):
         object_list = kwargs.get('object_list', [])
-        return {'page_title': 'AWPUG Library', 
+        return {'page_title': 'AWPUG Library',
                 'object_list':object_list}
 
 def book_detail(request, book_id):
     book = get_object_or_404(Book, id=book_id)
 
     output = '<h1>' + book.title + '</h1>'
-    output += 'Page length: ' + str(book.page_length) + '</br>' 
+    output += 'Page length: ' + str(book.page_length) + '</br>'
                                     # remember page_length is an int
     if book.authors:
         output += 'Authors:'
@@ -29,8 +29,6 @@ def book_detail(request, book_id):
     return HttpResponse(output)
 
 def request_details(request):
-    user_agent = request.META['HTTP_USER_AGENT']
-
     output = '<p>Hi, user.</p>'
     output += '<p>The path you accessed is: ' + request.path + '</p>'
     output += '<p>The HTTP method you used is: ' + request.method + '</p>'
@@ -40,10 +38,10 @@ def request_details(request):
 
     output += '<p>Your POST data is:</p>'
     for key in request.POST:
-        output += '<p>' + key + ': ' + request.POST[key]
+        output += '<p>' + key + ': ' + request.POST[key] + '</p>'
     output += '<p>Your GET data is:</p>'
     for key in request.GET:
-            output += '<p>' + key + ': ' + request.GET[key]
+            output += '<p>' + key + ': ' + request.GET[key] + '</p>'
 
     return HttpResponse(output)
 
